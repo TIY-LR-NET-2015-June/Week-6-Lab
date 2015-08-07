@@ -22,3 +22,25 @@ select,
 textarea {
     max-width: 280px;
 }
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: cornflowerblue;
+  background-color: white;
+}
+
+.navbar {
+  background-color: white;
+  border-color: whitesmoke;
+  color: cornflowerblue;
+}
+
+ .navbar:hover,
+ .navbar:focus {
+  color: aliceblue;
+  background-color: transparent;
+}
+
+
