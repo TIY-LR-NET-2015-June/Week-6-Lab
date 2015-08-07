@@ -49,9 +49,8 @@ namespace Week6LabTwitter.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Twitter Handle")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

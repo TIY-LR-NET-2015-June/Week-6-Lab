@@ -5,6 +5,17 @@ VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week6LabTwitter", "Week6LabTwitter\Week6LabTwitter.csproj", "{74751254-B1E2-4533-BA02-FCF9FA6149BF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{5ADE7007-C1ED-40DE-9C93-C9B3E1599460}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\AzureWebsitePublishModule.psm1 = PublishScripts\AzureWebsitePublishModule.psm1
+		PublishScripts\Publish-WebApplicationWebsite.ps1 = PublishScripts\Publish-WebApplicationWebsite.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{760F2FB6-F696-4032-B0C3-0EDB77F5732B}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Configurations\Week6LabTwitter-WAWS-dev.json = PublishScripts\Configurations\Week6LabTwitter-WAWS-dev.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{760F2FB6-F696-4032-B0C3-0EDB77F5732B} = {5ADE7007-C1ED-40DE-9C93-C9B3E1599460}
 	EndGlobalSection
 EndGlobal
