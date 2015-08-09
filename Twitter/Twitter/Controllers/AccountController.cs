@@ -163,7 +163,7 @@ namespace Twitter.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("StartPage", "Twitter");
+                    return RedirectToAction("StartPage", "AlreadyExistsTwitter");
                 }
                 AddErrors(result);
             }
@@ -392,7 +392,7 @@ namespace Twitter.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("StartPage", "Twitter");
+            return RedirectToAction("StartPage", "AlreadyExistsTwitter");
         }
 
         //
@@ -449,7 +449,7 @@ namespace Twitter.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("StartPage", "Twitter");
+            return RedirectToAction("StartPage", "AlreadyExistsTwitter");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
