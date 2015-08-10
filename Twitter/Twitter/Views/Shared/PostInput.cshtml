@@ -1,0 +1,14 @@
+﻿@model Twitter.Models.Post
+
+<div class="form-horizontal">
+    <h4>Create your post!</h4>
+    <hr />
+    <h2>@Html.EditorFor(model => model.Title)</h2>
+    <p>@Html.EditorFor(model => model.Body)</p>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="@((Model == null)? "Create":"Save")" class="btn btn-default" />
+        </div>
+    </div>
+</div>
