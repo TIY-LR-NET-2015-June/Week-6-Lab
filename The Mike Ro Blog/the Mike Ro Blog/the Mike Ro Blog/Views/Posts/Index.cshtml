@@ -1,0 +1,52 @@
+﻿@model IEnumerable<the_Mike_Ro_Blog.Models.PostVM>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Posts I follow</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Poster)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PostedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Text)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Poster)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PostedOn)
+        </td>
+        <td><h3>
+            @Html.DisplayFor(modelItem => item.Text)
+            </h3>
+        </td>
+        <td>
+            @{ 
+                if (item.IsMine == true)
+                    {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Post_Id})
+                    <p>----</p>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Post_Id})
+                    }
+            }
+        </td>
+    </tr>
+}
+
+
+</table>
