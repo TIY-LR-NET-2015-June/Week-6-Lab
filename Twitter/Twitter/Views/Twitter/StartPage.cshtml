@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Twitter.Models.Post>
+
+@{
+    ViewBag.Title = "Start Page";
+}
+
+<h2>Your feed</h2>
+<div class="container">
+    @foreach (var post in Model)
+    {
+        @Html.Partial("PostDetails", post)
+        <br />
+        <br />
+    }
+</div>
+@section scripts { 
+    <script>
+        //$("div.follow").click(function () 
+        $('.container').on('click', '.unfollow', function () {
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("Follow", "Twitter")",
+                    data: { id: $(this).data("id") }
+                }).done(function (msg) {
+                    $(this).html(msg);
+                }
+                )
+            })
+     //   $("div.unfollow").click(function ()
+        $('.container').on('click', '.unfollow', function ()
+         {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("Unfollow", "Twitter")",
+                data: { id: $(this).data("id") }
+        }).done(function (msg) {
+            $(this).html(msg);
+        }
+    )
+        })
+    </script>
+}
