@@ -14,9 +14,21 @@ namespace Twitter
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Create",
+                url: "Post/New",
+                defaults: new { controller = "Post", action = "Create" }
+                );
+
+            routes.MapRoute(
+                name: "Pagination",
+                url: "Post/{id}",
+                defaults: new { controller = "Post", action = "Details" }
+                );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "AlreadyExistsTwitter", action = "StartPage", id = UrlParameter.Optional }
+                defaults: new { controller = "Twitter", action = "StartPage", id = UrlParameter.Optional }
             );
         }
     }

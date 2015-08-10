@@ -8,6 +8,7 @@ using Twitter.Models;
 
 namespace Twitter.Controllers
 {
+    [Authorize]
     public class PostController : Controller
     {
         TwitterDBContext TwitterDB = new TwitterDBContext();
@@ -25,7 +26,7 @@ namespace Twitter.Controllers
             TwitterDB.Posts.Add(post);
             TwitterDB.Users.Find(Membership.GetUser().ProviderUserKey.ToString()).Posts.Add(TwitterDB.Posts.Find(post.Id));
             TwitterDB.SaveChanges();
-            return RedirectToAction("StartPage", "AlreadyExistsTwitter");
+            return RedirectToAction("StartPage", "Twitter");
         }
 
         [HttpGet]
@@ -41,7 +42,7 @@ namespace Twitter.Controllers
             TwitterDB.Users.Find(Membership.GetUser().ProviderUserKey.ToString()).Posts.Remove(TwitterDB.Posts.Find(post.Id));
             TwitterDB.SaveChanges();
 
-            return RedirectToAction("StartPage", "AlreadyExistsTwitter");
+            return RedirectToAction("StartPage", "Twitter");
         }
 
         [HttpGet]
@@ -55,7 +56,12 @@ namespace Twitter.Controllers
             TwitterDB.Posts.Remove(TwitterDB.Posts.Find(post.Id));
             TwitterDB.Posts.Add(post);
             TwitterDB.SaveChanges();
-            return RedirectToAction("StartPage", "AlreadyExistsTwitter");
+            return RedirectToAction("StartPage", "Twitter");
+        }
+
+        public ActionResult Details(int ID)
+        {
+            return View(TwitterDB.Posts.Find(ID));
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿@model Twitter.Models.Post
 
-<div class="container col-lg-4 col-md-4 col-lg-offset-1 col-md-offset-1">
+<div class="container col-lg-5 col-md-5 post">
     <h4>
-        Published by: @Html.DisplayFor(model => model.Publisher)
+        Published by: @Html.DisplayFor(model => model.Publisher.UserName)
     </h4>
     <p>
         @Html.DisplayFor(model => model.Title)
@@ -13,7 +13,7 @@
     <p>
         Published on: @Html.DisplayFor(model => model.PublishedOn)
     </p>
-
+    @Html.Partial("Unfollow", Model.Publisher.Id)
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
 </div>

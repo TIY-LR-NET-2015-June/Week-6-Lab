@@ -6,15 +6,16 @@ namespace Twitter.Migrations
     using System.Linq;
     using Models;
     using Microsoft.AspNet.Identity;
+    using System.Collections.Generic;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Twitter.Models.TwitterDBContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<TwitterDBContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Twitter.Models.TwitterDBContext context)
+        protected override void Seed(TwitterDBContext context)
         {
             //  This method will be called after migrating to the latest version.
 
@@ -38,32 +39,33 @@ namespace Twitter.Migrations
                     Email = "brandon@goza.net",
                     PasswordHash=password,
                     Posts = context.Posts.Where(p => p.Id == 1 || p.Id == 3).ToList(),
+                    SecurityStamp = Guid.NewGuid().ToString(),
                 },
                 new TwitterUser()
                 {
                     Id = "2",
                     UserName = "Daniel",
                     Email = "daniel@pollock.net",
-                    Following = context.Users.Where(p => p.Id == "1").ToList(),
                     PasswordHash = password,
+                    SecurityStamp = Guid.NewGuid().ToString(),
                 },
                 new TwitterUser()
                 {
                     Id = "3",
-                    UserName = "Aaron",
+                    UserName = "aaron@hudson.net",
                     Email = "aaron@hudson.net",
-                    Following = context.Users.Where(p => p.Id == "2").ToList(),
                     PasswordHash = password,
                     Posts = context.Posts.Where(p => p.Id == 2).ToList(),
+                    SecurityStamp = Guid.NewGuid().ToString(),
                 },
                 new TwitterUser()
                 {
                     Id = "4",
                     UserName = "Mike",
                     Email = "mike@null.net",
-                    Following = context.Users.Where(p => p.Id == "3").ToList(),
                     PasswordHash = password,
                     Posts = context.Posts.Where(p => p.Id == 4).ToList(),
+                    SecurityStamp = Guid.NewGuid().ToString(),
                 },
                 new TwitterUser()
                 {
@@ -72,25 +74,35 @@ namespace Twitter.Migrations
                     Email = "jason@williams.net",
                     PasswordHash = password,
                     Posts = context.Posts.Where(p => p.Id == 5).ToList(),
+                    SecurityStamp = Guid.NewGuid().ToString(),
                 },
                 new TwitterUser()
                 {
                     Id = "6",
                     UserName = "David",
                     Email = "david@plate.net",
-                    Following = context.Users.Where(p => p.Id == "1" || p.Id == "3").ToList(),
                     PasswordHash = password,
                     Posts = context.Posts.Where(p => p.Id == 6).ToList(),
+                    SecurityStamp = Guid.NewGuid().ToString(),
                 },
                 new TwitterUser()
                 {
                     Id = "7",
                     UserName = "Scott",
                     Email = "scott@furgeson.net",
-                    Following = context.Users.Where(p => p.Id == "1" || p.Id == "2" || p.Id == "3").ToList(),
                     PasswordHash = password,
                     Posts = context.Posts.Where(p => p.Id == 7).ToList(),
+                    SecurityStamp = Guid.NewGuid().ToString(),
                 });
+            context.Users.Find("3").Following.Add(context.Users.Find("1"));
+            context.Users.Find("3").Following.Add(context.Users.Find("2"));
+            context.Users.Find("2").Following.Add(context.Users.Find("1"));
+            context.Users.Find("6").Following.Add(context.Users.Find("7"));
+            context.Users.Find("6").Following.Add(context.Users.Find("4"));
+            context.Users.Find("5").Following.Add(context.Users.Find("3"));
+            context.Users.Find("7").Following.Add(context.Users.Find("1"));
+            context.Users.Find("7").Following.Add(context.Users.Find("6"));
+            context.Users.Find("7").Following.Add(context.Users.Find("4"));
             context.Posts.AddOrUpdate(
                 p => p.Title,
                 new Post()

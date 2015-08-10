@@ -2,7 +2,21 @@
     padding-top: 50px;
     padding-bottom: 20px;
 }
-
+.navbar {
+    background-color: blue;
+}
+.navbar-brand {
+    color: red;
+}
+.navbar-item {
+    color: red;
+}
+.post {
+    background-color: lightgray;
+    border: solid;
+    border-color: black;
+    color: darkblue;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -21,4 +35,13 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.follow {
+    cursor: pointer;
+    color: blue;
+}
+.unfollow {
+    cursor: pointer;
+    color: blue;
 }
