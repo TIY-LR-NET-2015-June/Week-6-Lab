@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -20,6 +22,19 @@ namespace Twitter.Web.Controllers
             return View(db.Posts.ToList());
         }
 
+        //Get: Users followed
+        public ActionResult Followed()
+        {
+            TwitterUser user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            return View(user.UsersFollowed.Select(u => new UsersFollowedVM() { FullName = u.FirstName + " " + u.LastName, UserName = u.UserName, Id = u.Id }));
+        }
+        
+        //Choose who to follow
+        public ActionResult FindUsers()
+        {
+            return View(db.Users.Select(u => new UsersFollowedVM() { FullName = u.FirstName + " " + u.LastName, UserName = u.UserName, Id = u.Id }));
+        }
+
         // GET: Posts/Details/5
         public ActionResult Details(int? id)
         {
@@ -38,6 +53,7 @@ namespace Twitter.Web.Controllers
         // GET: Posts/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
@@ -50,6 +66,9 @@ namespace Twitter.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                post.PostTime = DateTime.Now;
+                TwitterUser user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+                post.User = user;
                 db.Posts.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");

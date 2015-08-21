@@ -151,7 +151,7 @@ namespace Twitter.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new TwitterUser { UserName = model.Nickname, Email = model.Email };
+                var user = new TwitterUser { UserName = model.Nickname, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -163,7 +163,7 @@ namespace Twitter.Web.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Posts");
                 }
                 AddErrors(result);
             }
@@ -392,7 +392,7 @@ namespace Twitter.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("LogIn", "Account");
         }
 
         //
@@ -449,7 +449,7 @@ namespace Twitter.Web.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Posts");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
