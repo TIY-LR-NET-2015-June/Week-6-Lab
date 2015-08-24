@@ -24,7 +24,7 @@ namespace Twitter.Web.Controllers
             List<Post> posts = new List<Post>();
             posts.AddRange(user.Posts);
             user.UsersFollowed.ForEach(x => posts.AddRange(x.Posts));
-            posts.OrderBy(d => d.PostTime);
+            posts.OrderByDescending(d => d.PostTime);
             return View(posts);
         }
 
@@ -35,13 +35,30 @@ namespace Twitter.Web.Controllers
             TwitterUser user = db.Users.Find(User.Identity.GetUserId());
             return View(user.UsersFollowed.Select(u => new UsersFollowedVM() { FullName = u.FirstName + " " + u.LastName, UserName = u.UserName, Id = u.Id }));
         }
-        
-        //Choose who to follow
+
+        //Post: Users followed
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Followed([Bind(Include = "Id")] TwitterUser UserUnfollowed)
+        {
+            return View(Followed());
+        }
+
+        //Get: Choose who to follow
         [Authorize]
         public ActionResult FindUsers()
         {
             return View(db.Users.Select(u => new UsersFollowedVM() { FullName = u.FirstName + " " + u.LastName, UserName = u.UserName, Id = u.Id }));
         }
+
+        //Post: Choose who to follow
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FindUsers([Bind(Include = "Id")] TwitterUser UserFollowed)
+        {
+            return View(FindUsers());
+        }
+
 
         // GET: Posts/Details/5
         [Authorize]
@@ -73,7 +90,7 @@ namespace Twitter.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PostId,MyProperty,Text,PostTime,UserId")] Post post)
+        public ActionResult Create([Bind(Include = "PostId,Text,PostTime,UserId")] Post post)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +127,7 @@ namespace Twitter.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PostId,MyProperty,Text,PostTime,UserId")] Post post)
+        public ActionResult Edit([Bind(Include = "PostId,Text,PostTime,UserId")] Post post)
         {
             if (ModelState.IsValid)
             {
