@@ -36,14 +36,6 @@ namespace Twitter.Web.Controllers
             return View(user.UsersFollowed.Select(u => new UsersFollowedVM() { FullName = u.FirstName + " " + u.LastName, UserName = u.UserName, Id = u.Id }));
         }
 
-        //Post: Users followed
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Followed([Bind(Include = "Id")] TwitterUser UserUnfollowed)
-        {
-            return View(Followed());
-        }
-
         //Get: Choose who to follow
         [Authorize]
         public ActionResult FindUsers()
@@ -53,10 +45,27 @@ namespace Twitter.Web.Controllers
 
         //Post: Choose who to follow
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult FindUsers([Bind(Include = "Id")] TwitterUser UserFollowed)
+        public ActionResult FollowUser(string Id)
         {
-            return View(FindUsers());
+            TwitterUser user = db.Users.Find(User.Identity.GetUserId());
+
+            var followedUser = user.UsersFollowed.Where(i => i.Id == Id).FirstOrDefault();
+            if (followedUser == null)
+            {
+                TwitterUser whoTheyWantToFollow = db.Users.Find(Id);
+                user.UsersFollowed.Add(whoTheyWantToFollow);
+                db.SaveChanges();
+            }
+            return Content("OK");
+        }
+
+        [HttpPost]
+        public ActionResult UnFollowUser(string Id)
+        {
+            TwitterUser user = db.Users.Find(User.Identity.GetUserId());
+            var unfollowedUser = user.UsersFollowed.Where(i => i.Id == Id).FirstOrDefault();
+            user.UsersFollowed.Remove(unfollowedUser);
+            return Content("OK");
         }
 
 
@@ -70,7 +79,7 @@ namespace Twitter.Web.Controllers
             }
             Post post = db.Posts.Find(id);
             TwitterUser user = db.Users.Find(User.Identity.GetUserId());
-                              //Check to make sure the user follows the user that posted before returning post details (commented out for later implementation)
+            //Check to make sure the user follows the user that posted before returning post details (commented out for later implementation)
             if (post == null /*|| user.UsersFollowed.Any(y => y.Id != post.User.Id)*/)
             {
                 return HttpNotFound();

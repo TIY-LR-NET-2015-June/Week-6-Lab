@@ -6,9 +6,6 @@
 
 <h2>Followed</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -29,8 +26,8 @@
             @Html.DisplayFor(modelItem => item.FullName)
         </td>
         <td>
+            <div class="form-group"><input class="hidden" value="@Html.DisplayFor(modelItem => item.Id)" /></div>
             <div class="form-group">
-                <div class="hidden">@Html.DisplayFor(modelItem => item.Id)</div>
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Unfollow" class="btn btn-default" />
                 </div>

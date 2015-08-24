@@ -6,9 +6,6 @@
 
 <h2>FindUsers</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -20,23 +17,72 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FullName)
-        </td>
-        <td>
-            <div class="form-group">
-                <div class="hidden">@Html.DisplayFor(modelItem => item.Id)</div>
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Follow" class="btn btn-default" />
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input  data-userid="@item.Id" type="submit" value="Follow" class="btn btn-default follow" />
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </td>
-    </tr>
-}
+            </td>
+        </tr>
+    }
 
 </table>
+
+@section scripts{
+    <script>
+        $('.follow').click(function () {
+            var button =  $(this);
+            var userid = button.data('userid');
+
+            var buttonText = button.prop('value');
+            console.log(buttonText);
+            if (buttonText == "Follow" || buttonText == "Unfollowed") {
+                $.ajax({
+                    method: "POST",
+                    url: "/posts/followuser",
+                    data: { id: userid }
+                })
+                  .done(function (msg) {
+                      if (msg == "OK") {
+
+                          button.removeClass("btn-danger");
+                          button.addClass("btn-primary");
+                          button.prop('value', 'Followed');
+                      }
+                  })
+            };
+
+
+            if (buttonText == "Followed") {
+                $.ajax({
+                    method: "POST",
+                    url: "/posts/unfollowuser",
+                    data: { id: userid }
+                })
+                  .done(function (msg) {
+                      if (msg == "OK") {
+                          button.removeClass("btn-primary");
+                          button.addClass("btn-danger");
+                          button.prop('value', 'Unfollowed');
+                      }
+                  })
+            };
+
+
+        });
+
+    </script>
+
+}
