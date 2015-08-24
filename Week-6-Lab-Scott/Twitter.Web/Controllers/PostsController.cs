@@ -17,25 +17,34 @@ namespace Twitter.Web.Controllers
         private TwitterDbContext db = new TwitterDbContext();
 
         // GET: Posts
+        [Authorize]
         public ActionResult Index()
         {
-            return View(db.Posts.ToList());
+            TwitterUser user = db.Users.Find(User.Identity.GetUserId());
+            List<Post> posts = new List<Post>();
+            posts.AddRange(user.Posts);
+            user.UsersFollowed.ForEach(x => posts.AddRange(x.Posts));
+            posts.OrderBy(d => d.PostTime);
+            return View(posts);
         }
 
         //Get: Users followed
+        [Authorize]
         public ActionResult Followed()
         {
-            TwitterUser user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            TwitterUser user = db.Users.Find(User.Identity.GetUserId());
             return View(user.UsersFollowed.Select(u => new UsersFollowedVM() { FullName = u.FirstName + " " + u.LastName, UserName = u.UserName, Id = u.Id }));
         }
         
         //Choose who to follow
+        [Authorize]
         public ActionResult FindUsers()
         {
             return View(db.Users.Select(u => new UsersFollowedVM() { FullName = u.FirstName + " " + u.LastName, UserName = u.UserName, Id = u.Id }));
         }
 
         // GET: Posts/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -43,7 +52,9 @@ namespace Twitter.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Post post = db.Posts.Find(id);
-            if (post == null)
+            TwitterUser user = db.Users.Find(User.Identity.GetUserId());
+                              //Check to make sure the user follows the user that posted before returning post details (commented out for later implementation)
+            if (post == null /*|| user.UsersFollowed.Any(y => y.Id != post.User.Id)*/)
             {
                 return HttpNotFound();
             }
@@ -78,14 +89,16 @@ namespace Twitter.Web.Controllers
         }
 
         // GET: Posts/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
+            TwitterUser user = db.Users.Find(User.Identity.GetUserId());
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Post post = db.Posts.Find(id);
-            if (post == null)
+            if (post == null || post.User != user)
             {
                 return HttpNotFound();
             }
@@ -109,14 +122,16 @@ namespace Twitter.Web.Controllers
         }
 
         // GET: Posts/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            TwitterUser user = db.Users.Find(User.Identity.GetUserId());
             Post post = db.Posts.Find(id);
-            if (post == null)
+            if (post == null || post.User != user)
             {
                 return HttpNotFound();
             }
