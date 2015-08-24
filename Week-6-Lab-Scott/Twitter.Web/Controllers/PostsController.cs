@@ -67,7 +67,7 @@ namespace Twitter.Web.Controllers
             if (ModelState.IsValid)
             {
                 post.PostTime = DateTime.Now;
-                TwitterUser user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+                TwitterUser user = db.Users.Find(User.Identity.GetUserId());
                 post.User = user;
                 db.Posts.Add(post);
                 db.SaveChanges();
