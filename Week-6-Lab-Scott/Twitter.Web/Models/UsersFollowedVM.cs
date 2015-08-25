@@ -15,5 +15,8 @@ namespace Twitter.Web.Models
         [DisplayName("Full Name")]
         public string FullName { get; set; }
 
+        public bool AlreadyFollowing { get; set; }
+
+
     }
 }

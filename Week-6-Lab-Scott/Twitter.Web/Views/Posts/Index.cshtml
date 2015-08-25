@@ -34,9 +34,12 @@
                 @Html.DisplayFor(modelItem => item.User.UserName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.PostId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.PostId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.PostId })
+                @if (item.User.UserName == User.Identity.Name) { @Html.ActionLink("Edit", "Edit", new { id = item.PostId }); }
+            </td>
+            <td>
+                @if (item.User.UserName == User.Identity.Name)
+                { @Html.ActionLink("Delete", "Delete", new { id = item.PostId });
+                }
             </td>
         </tr>
     }

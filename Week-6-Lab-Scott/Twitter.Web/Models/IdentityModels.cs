@@ -17,6 +17,7 @@ namespace Twitter.Web.Models
         public virtual List<Post> Posts { get; set; }
 
         public virtual List<TwitterUser> UsersFollowed { get; set; }
+        public virtual List<TwitterUser> UsersFollowing { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<TwitterUser> manager)
         {

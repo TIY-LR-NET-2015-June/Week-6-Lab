@@ -30,7 +30,7 @@
                 <div class="form-inline">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <input  data-userid="@item.Id" type="submit" value="Follow" class="btn btn-default follow" />
+                            <input data-userid="@item.Id" type="submit" value='@(item.AlreadyFollowing? "Followed": "Follow")' class="btn follow @(item.AlreadyFollowing? "btn-primary": "")" />
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
 @section scripts{
     <script>
         $('.follow').click(function () {
-            var button =  $(this);
+            var button = $(this);
             var userid = button.data('userid');
 
             var buttonText = button.prop('value');

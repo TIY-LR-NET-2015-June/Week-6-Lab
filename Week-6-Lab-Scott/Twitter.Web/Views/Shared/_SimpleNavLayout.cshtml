@@ -29,13 +29,12 @@
 
         </div>
     </div>
-    <div class="container body-content">
-        <div class="form-inline">
-            <h3>
-                "Search:"
-                @Html.TextBox("Find a user or tweet")
-            </h3>
+    <div class="container body-content"><br/>
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon" id="sizing-addon1">Search</span>
+            <input type="text" class="form-control" placeholder="Search for..." aria-describedby="sizing-addon1">
         </div>
+
 
         @RenderBody()
         <hr />

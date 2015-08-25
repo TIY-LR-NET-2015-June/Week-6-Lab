@@ -12,14 +12,7 @@
     <h4>Post</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.MyProperty)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MyProperty)
-        </dd>
-
+       
         <dt>
             @Html.DisplayNameFor(model => model.Text)
         </dt>
@@ -35,15 +28,6 @@
         <dd>
             @Html.DisplayFor(model => model.PostTime)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-
     </dl>
 
     @using (Html.BeginForm()) {

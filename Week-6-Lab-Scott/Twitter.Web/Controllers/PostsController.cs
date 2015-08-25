@@ -40,7 +40,27 @@ namespace Twitter.Web.Controllers
         [Authorize]
         public ActionResult FindUsers()
         {
-            return View(db.Users.Select(u => new UsersFollowedVM() { FullName = u.FirstName + " " + u.LastName, UserName = u.UserName, Id = u.Id }));
+            var userid = User.Identity.GetUserId();
+
+            //grab all the users except for me. Already Following defaults to false here.
+            var model = db.Users.Where(x => x.Id != userid).Select(u => new UsersFollowedVM()
+            {
+                FullName = u.FirstName + " " + u.LastName,
+                UserName = u.UserName,
+                Id = u.Id
+            }).ToList();
+
+            //grab JUST the ids of all the people I'm following
+            var userids = db.Users.Find(userid).UsersFollowed.ToList().Select(x=>x.Id);
+
+            //go back through the model and if the model's id is in my list of ids I'm following them mark them as 'Already Following'
+            foreach(var m in model)
+            {
+                if (userids.Contains(m.Id))
+                    m.AlreadyFollowing = true;
+            }
+
+            return View(model);
         }
 
         //Post: Choose who to follow
@@ -65,6 +85,7 @@ namespace Twitter.Web.Controllers
             TwitterUser user = db.Users.Find(User.Identity.GetUserId());
             var unfollowedUser = user.UsersFollowed.Where(i => i.Id == Id).FirstOrDefault();
             user.UsersFollowed.Remove(unfollowedUser);
+            db.SaveChanges();
             return Content("OK");
         }
 
