@@ -12,4 +12,6 @@ namespace Week6LabTwitter.Models
         public string Body { get; set; }
         public virtual TwitterUser Author { get; set; }
     }
+    
+    
 }
