@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Week6LabTwitter.Models.Post>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<br />
+@foreach (var item in Model)
+{
+
+        <div class="box1">
+            <div class="authorName">@item.Body</div>
+        </div>
+
+        <p class="box2">2</p>
+
+        <p class="box3">3</p>
+
+    @*<tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>*@
+
+}
