@@ -4,13 +4,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Week6LabTwitter.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class TwitterUser : IdentityUser
     {
-        public Collection<Post> Posts { get; set; }
+        public TwitterUser()
+        {
+            Friends = new Collection<TwitterUser>();
+            FollowedBy = new Collection<TwitterUser>();
+        }
+
+        public virtual ICollection<Post> Posts { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<TwitterUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -18,6 +25,10 @@ namespace Week6LabTwitter.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public virtual ICollection<TwitterUser> Friends { get; set; }
+        public virtual ICollection<TwitterUser> FollowedBy { get; set; }
+
     }
 
     public class TwitterDbContext : IdentityDbContext<TwitterUser>
@@ -33,6 +44,22 @@ namespace Week6LabTwitter.Models
         }
         public DbSet<Post> Posts { get; set; }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<TwitterUser>().HasMany(x => x.Friends).WithMany(x => x.FollowedBy)
+                .Map(x =>
+                {
+                    x.ToTable("Followers");
+                    x.MapLeftKey("UserId");
+                    x.MapRightKey("FollowedById");
+
+                });
+
+
+        }
+
+        public System.Data.Entity.DbSet<Week6LabTwitter.Models.TwitterUser> TwitterUsers { get; set; }
     }
 }

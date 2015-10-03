@@ -8,23 +8,11 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <br />
-@foreach (var item in Model)
+@foreach (var item in Model.OrderByDescending(x => x.CreatedOn))
 {
 
-        <div class="box1">
-            <div class="authorName">@item.Body</div>
-        </div>
-
-        <p class="box2">2</p>
-
-        <p class="box3">3</p>
-
-    @*<tr>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>*@
-
+    <div class="tweet">
+        <div> <b>@item.Author.UserName</b>  - @item.CreatedOn</div>
+        <div>@item.Body</div>
+    </div>
 }

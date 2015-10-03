@@ -10,14 +10,25 @@ using Week6LabTwitter.Models;
 
 namespace Week6LabTwitter.Controllers
 {
+    [Authorize]
     public class PostsController : Controller
     {
         private TwitterDbContext db = new TwitterDbContext();
 
+
         // GET: Posts
         public ActionResult Index()
         {
-            return View(db.Posts.ToList());
+            var loggedInUsername = User.Identity.Name;
+            var loggedInUser = db.Users.First(x => x.UserName == loggedInUsername);
+
+            var model = new List<Post>();
+            //grab our posts.
+            model.AddRange(db.Posts.Where(x => x.Author.UserName == loggedInUsername).ToList());
+            //grab our friends Posts.
+            model.AddRange(loggedInUser.Friends.SelectMany(x => x.Posts).ToList());
+
+            return View(model);
         }
 
         // GET: Posts/Details/5
@@ -46,16 +57,21 @@ namespace Week6LabTwitter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CreatedOn,Body,Author")] Post post)
+        public ActionResult Create(string body)
         {
             if (ModelState.IsValid)
             {
-                db.Posts.Add(post);
+                Post newpost = new Post();
+                string loggedInUsername = User.Identity.Name;
+                newpost.Author = db.Users.First(x => x.UserName == loggedInUsername);
+                newpost.Body = body;
+                newpost.CreatedOn = DateTime.Now;
+                db.Posts.Add(newpost);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(post);
+            return View((object)body);
         }
 
         // GET: Posts/Edit/5
