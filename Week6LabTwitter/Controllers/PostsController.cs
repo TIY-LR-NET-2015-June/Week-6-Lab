@@ -13,9 +13,12 @@ namespace Week6LabTwitter.Controllers
     [Authorize]
     public class PostsController : Controller
     {
-        private TwitterDbContext db = new TwitterDbContext();
+        public TwitterDbContext db = new TwitterDbContext();
 
-
+        public ActionResult FindFriends()
+        {
+            return View();   
+        }
         // GET: Posts
         public ActionResult Index()
         {

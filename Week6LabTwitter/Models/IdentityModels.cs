@@ -60,6 +60,5 @@ namespace Week6LabTwitter.Models
 
         }
 
-        public System.Data.Entity.DbSet<Week6LabTwitter.Models.TwitterUser> TwitterUsers { get; set; }
     }
 }
