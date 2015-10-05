@@ -15,9 +15,34 @@ namespace Week6LabTwitter.Controllers
     {
         public TwitterDbContext db = new TwitterDbContext();
 
+        public ActionResult FollowFriend(string id , bool follow)
+        {
+            var loggedInUsername = User.Identity.Name;
+            var loggedInUser = db.Users.First(x => x.UserName == loggedInUsername);
+            var newfollower = db.Users.Find(id);
+
+            if (follow)
+            {
+                loggedInUser.Friends.Add(newfollower);
+            }
+            else
+            {
+                loggedInUser.Friends.Remove(newfollower);
+            }
+
+            db.SaveChanges();
+
+            return Content("Ok");
+        }
+
         public ActionResult FindFriends()
         {
-            return View();   
+            var loggedInUsername = User.Identity.Name;
+            var loggedInUser = db.Users.First(x => x.UserName == loggedInUsername);
+            var model = db.Users.Where(x => x.UserName != loggedInUsername).ToList()
+                .Select(u => new FindFriendViewModel() {  FriendId = u.Id, FriendName = u.UserName, AlreadyAFriend = u.FollowedBy.Contains(loggedInUser) });
+
+            return View(model);
         }
         // GET: Posts
         public ActionResult Index()
