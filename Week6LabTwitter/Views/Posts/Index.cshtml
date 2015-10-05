@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Week6LabTwitter.Models.Post>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<br />
+@foreach (var item in Model.OrderByDescending(x => x.CreatedOn))
+{
+
+    <div class="tweet">
+        <div> <b>@item.Author.UserName</b>  - @item.CreatedOn</div>
+        <div>@item.Body</div>
+    </div>
+}

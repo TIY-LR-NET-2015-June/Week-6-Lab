@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Week6LabTwitter.Models.FindFriendViewModel>
+
+@{
+    ViewBag.Title = "FindFriends";
+}
+
+<h2>FindFriends</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-condensed table-bordered">
+    <tr>
+        <th>
+            User Name
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FriendName)
+            </td>
+
+            <td>
+                <button data-friendid="@item.FriendId" class="followbtn btn btn-@(item.AlreadyAFriend ? "danger" : "primary")">@(item.AlreadyAFriend ? "Unfollow" : "Follow")</button>
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+@section scripts{
+
+    <script>
+
+        $(".followbtn").click(function () {
+
+            var that = $(this);
+            var willFollow = that.text() == "Follow" || that.text() == "UnFollowed";
+            $.post("/posts/FollowFriend", { id: that.data("friendid"), follow: willFollow })
+                .done(function (result) {
+                    if (willFollow) {
+                        that.text("Followed");
+                        that.addClass("btn-danger");
+                        that.removeClass("btn-primary");
+                    }
+                    else {
+                        that.text("UnFollowed");
+                        that.addClass("btn-primary");
+                        that.removeClass("btn-danger");
+                    }
+                });
+
+
+        });
+    </script>
+}
